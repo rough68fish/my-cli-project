@@ -1,20 +1,22 @@
 import * as fs from 'fs';
 import * as xlsx from 'xlsx';
 
-interface Requirement {
+export interface Requirement {
   id: string;
   category: string;
   title: string;
   description: string;
+  controls_reference: string;
 }
 
-export function writeRequirement(reqmntID: string, reqmntCat: string, reqmntTitle: string, description: string): void {
+export function writeRequirement(requirement: Requirement): void {
+  const { id, category, title, description, controls_reference } = requirement;
   const formattedDescription = description.replace(/\r\n/g, '<br>');
-  const content = `# Requirement ${reqmntID}
+  const content = `# Requirement ${id}
 
 | ID   | Category   | Title       |
 |------|------------|-------------|
-| ${reqmntID} | ${reqmntCat} | ${reqmntTitle} |
+| ${id} | ${category} | ${title} |
 
 | Description |
 | ----- |
@@ -22,7 +24,7 @@ export function writeRequirement(reqmntID: string, reqmntCat: string, reqmntTitl
 
 `;
 
-  fs.writeFileSync(`Req${reqmntID}.md`, content, 'utf8');
+  fs.writeFileSync(`Req${id}.md`, content, 'utf8');
 }
 
 export function readRequirement(reqmntID: string): Requirement {
@@ -33,6 +35,7 @@ export function readRequirement(reqmntID: string): Requirement {
   let category = '';
   let title = '';
   let description = '';
+  let controls_reference = '';
 
   lines.forEach((line, index) => {
     if (line.includes('| ID   | Category   | Title       |')) {
@@ -47,14 +50,14 @@ export function readRequirement(reqmntID: string): Requirement {
     }
   });
 
-  return { id, category, title, description };
+  return { id, category, title, description, controls_reference };
 }
 
 export function readExcelFile(filePath: string): any[] {
   const workbook = xlsx.readFile(filePath);
   const sheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];
-  const data = xlsx.utils.sheet_to_json(worksheet);
+  const data = xlsx.utils.sheet_to_json(worksheet, { defval: '' });
 
   return data;
 }

@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { writeRequirement, readRequirement } from './util';
+import { writeRequirement, readRequirement, Requirement } from './util';
 
 jest.mock('fs');
 
@@ -9,26 +9,29 @@ describe('writeRequirement', () => {
   });
 
   it('should write the correct content to a file', () => {
-    const reqmntID = '001';
-    const reqmntCat = 'Category1';
-    const reqmntTitle = 'Title1';
-    const description = 'This is a test requirement.';
+    const requirement: Requirement = {
+      id: '001',
+      category: 'Category1',
+      title: 'Title1',
+      description: 'This is a test requirement.',
+      controls_reference: 'Control1, Control2'
+    };
 
-    const expectedContent = `# Requirement ${reqmntID}
+    const expectedContent = `# Requirement ${requirement.id}
 
 | ID   | Category   | Title       |
 |------|------------|-------------|
-| ${reqmntID} | ${reqmntCat} | ${reqmntTitle} |
+| ${requirement.id} | ${requirement.category} | ${requirement.title} |
 
 | Description |
 | ----- |
-| ${description} |
+| ${requirement.description.replace(/\r\n/g, '<br>')} |
 
 `;
 
-    writeRequirement(reqmntID, reqmntCat, reqmntTitle, description);
+    writeRequirement(requirement);
 
-    expect(fs.writeFileSync).toHaveBeenCalledWith(`Req${reqmntID}.md`, expectedContent, 'utf8');
+    expect(fs.writeFileSync).toHaveBeenCalledWith(`Req${requirement.id}.md`, expectedContent, 'utf8');
   });
 });
 
@@ -58,7 +61,8 @@ describe('readRequirement', () => {
       id: '001',
       category: 'Category1',
       title: 'Title1',
-      description: 'This is a test requirement.'
+      description: 'This is a test requirement.',
+      controls_reference: ''
     });
   });
 });
