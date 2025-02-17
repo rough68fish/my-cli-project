@@ -47,9 +47,7 @@ Replace `[options]` with the appropriate command line arguments for the function
 The util library contains the following functions:
 
 writeRequirement
-```
-function writeRequirement(reqmntID: string, reqmntCat: string, reqmntTitle: string, description: string): void
-```
+`function writeRequirement(reqmntID: string, reqmntCat: string, reqmntTitle: string, description: string): void`
 
 Writes a requirement to a Markdown file with the name Req{reqmntID}.md. The content includes the ID, category, title, and description of the requirement.
 
