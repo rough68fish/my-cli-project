@@ -1,4 +1,4 @@
-const { readExcelFile } = require('./lib/util');
+const { readExcelFile } = require('./dist/util');
 
 const filePath = 'requirements.xlsx';
 

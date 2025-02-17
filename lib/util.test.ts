@@ -1,5 +1,5 @@
-const fs = require('fs');
-const { writeRequirement, readRequirement } = require('./util');
+import * as fs from 'fs';
+import { writeRequirement, readRequirement } from './util';
 
 jest.mock('fs');
 
@@ -37,7 +37,7 @@ describe('readRequirement', () => {
     jest.clearAllMocks();
   });
 
-  it('should read the correct content from a file and print it', () => {
+  it('should read the correct content from a file and return it', () => {
     const reqmntID = '001';
     const content = `# Requirement ${reqmntID}
 
@@ -50,19 +50,15 @@ describe('readRequirement', () => {
 | This is a test requirement. |
 
 `;
-    fs.readFileSync.mockReturnValue(content);
-
-    console.log = jest.fn();
+    (fs.readFileSync as jest.Mock).mockReturnValue(content);
 
     const result = readRequirement(reqmntID);
 
-    expect(console.log).toHaveBeenCalledWith('ID: 001, Category: Category1, Title: Title1, Description: This is a test requirement.');
-  
     expect(result).toEqual({
       id: '001',
       category: 'Category1',
       title: 'Title1',
-      description: 'This is a test requirement.',
+      description: 'This is a test requirement.'
     });
-});
+  });
 });

@@ -1,4 +1,4 @@
-const { readExcelFile, writeRequirement } = require('./lib/util');
+const { readExcelFile, writeRequirement } = require('./dist/util');
 
 function processExcelFile(filePath) {
   const data = readExcelFile(filePath);
