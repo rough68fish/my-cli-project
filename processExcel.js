@@ -4,8 +4,8 @@ function processExcelFile(filePath) {
   const data = readExcelFile(filePath);
 
   data.forEach((row) => {
-    const { ID, Category, Title } = row;
-    writeRequirement(ID, Category, Title);
+    const { ID, Category, Title, Description } = row;
+    writeRequirement(ID, Category, Title, Description);
   });
 }
 
