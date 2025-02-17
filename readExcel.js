@@ -2,4 +2,8 @@ const { readExcelFile } = require('./lib/util');
 
 const filePath = 'requirements.xlsx';
 
-readExcelFile(filePath);
+data = readExcelFile(filePath);
+
+data.forEach((row) => {
+    console.log(row);
+});
